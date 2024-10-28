@@ -1,0 +1,51 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "equals": "Microsoft.CognitiveServices/accounts/deployments",
+          "field": "type"
+        },
+        {
+          "field": "Microsoft.CognitiveServices/accounts/deployments/sku.name",
+          "notIn": "[parameters('allowedSkus')]"
+        }
+      ]
+    },
+    "then": {
+      "effect": "[parameters('effect')]"
+    }
+  },
+  "parameters": {
+    "allowedSkus": {
+      "type": "Array",
+      "metadata": {
+        "displayName": "Allowed Deployment Types",
+        "description": "Select the allowed Deployment Types for deployment"
+      },
+      "allowedValues": [
+        "Standard",
+        "Provisioned-Managed",
+        "GlobalStandard"
+      ],
+      "defaultValue": [
+        "Standard",
+        "GlobalStandard"
+      ]
+    },	
+    "effect": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Effect for the others",
+        "description": "Enable or disable the enforcement of the policy"
+      },
+      "allowedValues": [
+        "AuditIfNotExists",
+        "Deny",
+        "Disabled"
+      ],
+      "defaultValue": "Deny"
+    }
+  }
+}
